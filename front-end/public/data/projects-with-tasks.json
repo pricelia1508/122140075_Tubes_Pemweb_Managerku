@@ -1,0 +1,102 @@
+[
+  {
+    "id": 101,
+    "name": "Redesign Landing Page",
+    "description": "Mendesain ulang halaman utama agar lebih modern dan mobile-friendly.",
+    "start_date": "2025-05-01",
+    "end_date": "2025-06-01",
+    "status": "in_progress",
+    "created_at": "2025-05-01T09:00:00Z",
+    "finish_at": null,
+    "tasks": [
+      {
+        "id": 201,
+        "name": "Buat UI Hero Section",
+        "description": "Menggunakan Tailwind dan komponen shadcn.",
+        "priority": "high",
+        "status": "in_progress",
+        "assigned_to": 2
+      },
+      {
+        "id": 202,
+        "name": "Responsive Layout",
+        "description": "Pastikan layout mendukung tampilan mobile.",
+        "priority": "medium",
+        "status": "todo",
+        "assigned_to": 2
+      },
+      {
+        "id": 204,
+        "name": "Integrasi Form Kontak",
+        "description": "Tambahkan validasi dan pengiriman via API.",
+        "priority": "low",
+        "status": "todo",
+        "assigned_to": 3
+      }
+    ]
+  },
+  {
+    "id": 102,
+    "name": "Implementasi Fitur Notifikasi",
+    "description": "Menambahkan fitur notifikasi real-time menggunakan WebSocket.",
+    "start_date": "2025-05-10",
+    "end_date": "2025-05-25",
+    "status": "not_started",
+    "created_at": "2025-05-10T08:30:00Z",
+    "finish_at": null,
+    "tasks": [
+      {
+        "id": 203,
+        "name": "Setup WebSocket Server",
+        "description": "Integrasi dengan backend Pyramid untuk real-time notifikasi.",
+        "priority": "high",
+        "status": "not_started",
+        "assigned_to": 1
+      },
+      {
+        "id": 205,
+        "name": "Testing Sisi Client",
+        "description": "Pastikan client React bisa menerima event.",
+        "priority": "medium",
+        "status": "todo",
+        "assigned_to": 1
+      }
+    ]
+  },
+  {
+    "id": 103,
+    "name": "Pembuatan Dashboard Admin",
+    "description": "Fitur untuk mengelola user, konten, dan laporan.",
+    "start_date": "2025-04-15",
+    "end_date": "2025-06-20",
+    "status": "in_progress",
+    "created_at": "2025-04-15T10:00:00Z",
+    "finish_at": null,
+    "tasks": [
+      {
+        "id": 206,
+        "name": "Desain UI Sidebar",
+        "description": "Gunakan Tailwind dan ikon dari lucide-react.",
+        "priority": "high",
+        "status": "done",
+        "assigned_to": 3
+      },
+      {
+        "id": 207,
+        "name": "Integrasi API Manajemen User",
+        "description": "CRUD user dengan autentikasi token.",
+        "priority": "high",
+        "status": "in_progress",
+        "assigned_to": 4
+      },
+      {
+        "id": 208,
+        "name": "Export Data ke Excel",
+        "description": "Tambahkan fitur export pada laporan.",
+        "priority": "medium",
+        "status": "todo",
+        "assigned_to": 2
+      }
+    ]
+  }
+]

@@ -1,0 +1,201 @@
+[
+  {
+    "id": 1,
+    "title": "Nasi Goreng Spesial",
+    "description": "Nasi goreng lezat dengan telur, ayam suwir, dan bumbu istimewa.",
+    "ingredients": [
+      "2 porsi nasi putih",
+      "2 butir telur",
+      "100 gr ayam suwir",
+      "1 siung bawang putih, cincang",
+      "2 sdm kecap manis",
+      "Garam & lada secukupnya"
+    ],
+    "steps": [
+      "Tumis bawang putih hingga harum.",
+      "Masukkan telur, orak-arik sebentar.",
+      "Tambahkan ayam suwir dan nasi.",
+      "Tuangkan kecap manis, aduk rata.",
+      "Bumbui dengan garam dan lada, sajikan."
+    ],
+    "image": "https://picsum.photos/id/1074/800/500 "
+  },
+  {
+    "id": 2,
+    "title": "Soto Ayam Lamongan",
+    "description": "Soto ayam khas Lamongan dengan kuah kuning gurih dan bumbu rempah lengkap.",
+    "ingredients": [
+      "500 gr daging ayam",
+      "1 liter air kaldu",
+      "Serai, lengkuas, kunyit",
+      "Daun salam, daun jeruk",
+      "Garam & gula"
+    ],
+    "steps": [
+      "Rebus ayam hingga matang, angkat dan suwir.",
+      "Tumis bumbu halus hingga wangi.",
+      "Masukkan tumisan bumbu ke dalam kaldu.",
+      "Didihkan, tambahkan garam dan gula.",
+      "Sajikan kuah dengan ayam suwir dan pelengkap."
+    ],
+    "image": "https://picsum.photos/id/260/800/500 "
+  },
+  {
+    "id": 3,
+    "title": "Bakso Sapi Kenyal",
+    "description": "Resep bakso sapi kenyal dan nikmat untuk dinikmati bersama kuah panas.",
+    "ingredients": [
+      "500 gr daging sapi giling",
+      "1 buah wortel, parut",
+      "1 batang daun bawang, iris halus",
+      "1 butir telur",
+      "1 sdt garam",
+      "1/2 sdt merica bubuk",
+      "1/2 sdt penyedap rasa",
+      "Air untuk merebus"
+    ],
+    "steps": [
+      "Campurkan semua bahan bakso, uleni hingga kalis.",
+      "Bentuk adonan menjadi bulatan kecil, rebus hingga mengapung.",
+      "Siapkan kuah dengan kaldu sapi, bawang putih, dan bumbu lainnya.",
+      "Sajikan bakso dengan kuah hangat."
+    ],
+    "image": "https://picsum.photos/id/83/800/500 "
+  },
+  {
+    "id": 4,
+    "title": "Sup Ayam Jagung Manis",
+    "description": "Sup hangat dengan campuran jagung manis dan daging ayam lembut.",
+    "ingredients": [
+      "250 gr daging ayam potong dadu",
+      "2 buah jagung manis, pipil",
+      "1 buah wortel, iris tipis",
+      "1 batang daun bawang, iris",
+      "2 siung bawang putih, cincang",
+      "Garam & lada secukupnya"
+    ],
+    "steps": [
+      "Rebus ayam hingga matang, sisihkan.",
+      "Tumis bawang putih hingga harum, masukkan wortel dan daun bawang.",
+      "Tambahkan jagung manis, tuang air kaldu ayam.",
+      "Masukkan ayam, bumbui dengan garam dan lada.",
+      "Didihkan, sajikan hangat."
+    ],
+    "image": "https://picsum.photos/id/237/800/500 "
+  },
+  {
+    "id": 5,
+    "title": "Pecel Lele Lengkap",
+    "description": "Lele goreng renyah disajikan dengan sambal pecel dan lalapan segar.",
+    "ingredients": [
+      "500 gr ikan lele, bersihkan",
+      "100 ml tepung beras",
+      "100 ml air",
+      "Sambal pecel (cabai, terasi, gula jawa)",
+      "Lalapan (selada, timun, tomat)"
+    ],
+    "steps": [
+      "Campur tepung beras dan air, celupkan ikan lele.",
+      "Goreng hingga keemasan, tiriskan.",
+      "Buat sambal pecel dengan blender cabai, terasi, dan gula jawa.",
+      "Sajikan lele goreng dengan sambal pecel dan lalapan."
+    ],
+    "image": "https://picsum.photos/id/732/800/500 "
+  },
+  {
+    "id": 6,
+    "title": "Kue Lumpur Kentang",
+    "description": "Kue basah lembut berbahan dasar kentang dan santan, cocok sebagai camilan sore.",
+    "ingredients": [
+      "500 gr kentang, kukus dan haluskan",
+      "200 ml santan kelapa",
+      "1 butir telur",
+      "1 sdt garam",
+      "1/2 sdt vanili bubuk",
+      "1/4 sdt baking powder"
+    ],
+    "steps": [
+      "Campurkan kentang halus, santan, telur, garam, vanili, dan baking powder.",
+      "Aduk hingga rata, tuang ke loyang olesi margarin.",
+      "Panggang di oven 180°C selama 30 menit.",
+      "Angkat, potong-potong, dan sajikan hangat."
+    ],
+    "image": "https://picsum.photos/id/972/800/500 "
+  },
+  {
+    "id": 7,
+    "title": "Ayam Bakar Bumbu Kuning",
+    "description": "Ayam bakar dengan bumbu kuning tradisional Indonesia.",
+    "ingredients": [
+      "500 gr daging ayam potong",
+      "Bumbu halus: 5 siung bawang merah, 3 siung bawang putih, 2 cm kunyit, 1 cm jahe, 1 cm lengkuas",
+      "Garam & gula secukupnya",
+      "Minyak untuk menggoreng"
+    ],
+    "steps": [
+      "Balurkan ayam dengan bumbu halus, diamkan selama 30 menit.",
+      "Panaskan minyak, goreng ayam hingga setengah matang.",
+      "Panggang atau bakar ayam hingga matang sempurna.",
+      "Oleskan sisa bumbu saat memanggang, sajikan dengan lalapan."
+    ],
+    "image": "https://picsum.photos/id/100/800/500 "
+  },
+  {
+    "id": 8,
+    "title": "Es Cendol",
+    "description": "Cendol tradisional dengan sirup gula aren dan santan.",
+    "ingredients": [
+      "200 gr tepung beras",
+      "200 gr tepung sagu",
+      "1 liter air",
+      "Sirup gula aren",
+      "Santan dingin",
+      "Hiasan (kelapa parut, meses, tape singkong)"
+    ],
+    "steps": [
+      "Campurkan tepung beras dan sagu, tuang sedikit demi sedikit air panas.",
+      "Uleni hingga kalis, bentuk menjadi benang-benang kecil.",
+      "Rebus cendol hingga mengapung, tiriskan.",
+      "Sajikan dengan sirup gula aren, santan, dan hiasan."
+    ],
+    "image": "https://picsum.photos/id/101/800/500 "
+  },
+  {
+    "id": 9,
+    "title": "Rendang Padang",
+    "description": "Rendang daging sapi khas Padang dengan bumbu rempah istimewa.",
+    "ingredients": [
+      "1 kg daging sapi potong",
+      "Bumbu halus: 10 siung bawang merah, 5 siung bawang putih, 5 cm kunyit, 5 cm jahe, 5 cm lengkuas",
+      "Bumbu kering: ketumbar, jintan, cabe merah, asam gelugur",
+      "Kelapa parut, santan, garam, gula"
+    ],
+    "steps": [
+      "Rebus daging hingga empuk, sisihkan.",
+      "Tumis bumbu halus hingga harum, tambahkan bumbu kering.",
+      "Masukkan kelapa parut, aduk hingga kering.",
+      "Tambahkan santan, garam, dan gula, masak hingga bumbu meresap."
+    ],
+    "image": "https://picsum.photos/id/102/800/500 "
+  },
+  {
+    "id": 10,
+    "title": "Martabak Manis",
+    "description": "Martabak manis tebal dengan isian coklat dan keju.",
+    "ingredients": [
+      "250 gr tepung terigu",
+      "1 butir telur",
+      "1 sdt ragi instan",
+      "1 sdt gula",
+      "1/2 sdt garam",
+      "Isian: coklat bubuk, keju cheddar, meses"
+    ],
+    "steps": [
+      "Campurkan tepung, telur, ragi, gula, dan garam, aduk hingga kalis.",
+      "Diamkan adonan hingga mengembang 2 kali lipat.",
+      "Pipihkan adonan, isi dengan coklat bubuk, keju, dan meses.",
+      "Gulung, panggang hingga matang, potong-potong, dan sajikan."
+    ],
+    "image": "https://picsum.photos/id/103/800/500 "
+  }
+]

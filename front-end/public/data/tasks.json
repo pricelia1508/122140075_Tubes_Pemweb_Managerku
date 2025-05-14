@@ -1,0 +1,29 @@
+[
+  {
+    "id": 201,
+    "project_id": 101,
+    "name": "Buat UI Hero Section",
+    "description": "Menggunakan Tailwind dan komponen shadcn.",
+    "priority": "high",
+    "status": "in_progress",
+    "assigned_to": 2
+  },
+  {
+    "id": 202,
+    "project_id": 101,
+    "name": "Responsive Layout",
+    "description": "Pastikan layout mendukung tampilan mobile.",
+    "priority": "medium",
+    "status": "todo",
+    "assigned_to": 2
+  },
+  {
+    "id": 203,
+    "project_id": 102,
+    "name": "Setup WebSocket Server",
+    "description": "Integrasi dengan backend Pyramid untuk real-time notifikasi.",
+    "priority": "high",
+    "status": "not_started",
+    "assigned_to": 1
+  }
+]

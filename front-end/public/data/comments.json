@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "recipeId": 1,
+    "name": "Jane Doe",
+    "comment": "This recipe was delicious and easy to follow!",
+    "createdAt": "2025-05-14T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "recipeId": 1,
+    "name": "John Smith",
+    "comment": "Tried it last night. My family loved it!",
+    "createdAt": "2025-05-14T12:30:00Z"
+  },
+  {
+    "id": 3,
+    "recipeId": 2,
+    "name": "Alice",
+    "comment": "Perfect comfort food!",
+    "createdAt": "2025-05-14T15:10:00Z"
+  }
+]

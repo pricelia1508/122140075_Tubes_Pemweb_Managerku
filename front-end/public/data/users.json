@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "username": "pricelia",
+    "email": "pricelia.122140075@student.itera.ac.id",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "username": "john_doe",
+    "email": "john@example.com",
+    "role": "member"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 101,
+    "name": "Redesign Landing Page",
+    "description": "Mendesain ulang halaman utama agar lebih modern dan mobile-friendly.",
+    "start_date": "2025-05-01",
+    "end_date": "2025-06-01",
+    "status": "in_progress",
+    "created_at": "2025-05-01T09:00:00Z",
+    "finish_at": null
+  },
+  {
+    "id": 102,
+    "name": "Implementasi Fitur Notifikasi",
+    "description": "Menambahkan fitur notifikasi real-time menggunakan WebSocket.",
+    "start_date": "2025-05-10",
+    "end_date": "2025-05-25",
+    "status": "not_started",
+    "created_at": "2025-05-10T08:30:00Z",
+    "finish_at": null
+  }
+]
