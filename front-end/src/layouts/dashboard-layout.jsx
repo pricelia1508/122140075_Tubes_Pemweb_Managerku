@@ -1,26 +1,34 @@
-import { useLocation, Link } from "react-router-dom";
-import { LayoutDashboard, KanbanIcon, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { LayoutDashboard, KanbanIcon, UserIcon } from "lucide-react";
 import clsx from "clsx";
+import { useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth"; // pastikan ini sesuai path-mu
 
 const navItems = [
   { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  {
-    label: "Projects",
-    path: "/dashboard/manage-projects",
-    icon: KanbanIcon,
-  },
+  { label: "Projects", path: "/dashboard/manage-projects", icon: KanbanIcon },
+  { label: "Profile", path: "/dashboard/profile", icon: UserIcon },
 ];
 
 export default function DashboardLayout({ children }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { checkSession } = useAuth();
+
+  // 🔐 Cek session saat halaman dimuat
+  useEffect(() => {
+    const session = checkSession();
+
+    if (!session.isValid) {
+      navigate("/login");
+    }
+  }, [checkSession, navigate]);
 
   return (
     <div className="min-h-screen bg-muted/40 pb-16">
-      {" "}
-      {/* bottom padding for nav */}
       {/* Main Content */}
-      <main className="p-4">{children}</main>
+      <main className="p-0 md:p-4">{children}</main>
+
       {/* Floating Bottom Navigation */}
       <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-md bg-white shadow-xl rounded-xl px-4 py-2 flex justify-around items-center border border-border">
         {navItems.map(({ label, path, icon: Icon }) => {
@@ -41,18 +49,6 @@ export default function DashboardLayout({ children }) {
             </Link>
           );
         })}
-
-        {/* Logout Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-600 hover:text-red-700"
-          asChild
-        >
-          <Link to="/">
-            <LogOut className="w-5 h-5" />
-          </Link>
-        </Button>
       </nav>
     </div>
   );

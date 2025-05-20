@@ -1,0 +1,20 @@
+[
+  {
+    "id": "f9dcb631-31d5-47e7-bab9-55d21314b101",
+    "username": "alice",
+    "email": "alice@example.com",
+    "password": "hashed_password_1"
+  },
+  {
+    "id": "1db82e6f-b58d-40c0-8b5e-4a8c65a2c202",
+    "username": "bob",
+    "email": "bob@example.com",
+    "password": "hashed_password_2"
+  },
+  {
+    "id": "5cf47035-5705-4f30-a23d-9de4bca80303",
+    "username": "charlie",
+    "email": "charlie@example.com",
+    "password": "hashed_password_3"
+  }
+]

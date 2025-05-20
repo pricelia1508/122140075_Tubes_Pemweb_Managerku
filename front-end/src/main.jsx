@@ -6,10 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "@/pages/login/index.jsx";
 import Register from "@/pages/register/index.jsx";
 import Dashboard from "@/pages/dashboard";
-import ManageProjects from "./pages/dashboard/manage-projects";
-import CreateProject from "./pages/dashboard/manage-projects/create";
-import EditProject from "./pages/dashboard/manage-projects/edit";
-import ProjectDetailWithTasks from "./pages/dashboard/manage-projects/show";
+import IndexManageProject from "@/pages/dashboard/manage-projects";
+import ShowManageProject from "@/pages/dashboard/manage-projects/show";
+import IndexNotFound from "@/pages/not-found";
+import IndexProfile from "@/pages/dashboard/profile";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,27 +19,26 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<h1>Halaman tidak ditemukan</h1>} />
+        <Route path="*" element={<IndexNotFound />} />
 
         {/* ADMIN AREAS */}
         <Route path="/dashboard" element={<Dashboard />} />
+
         {/* Manage Projects */}
-        <Route path="/dashboard/manage-projects" element={<ManageProjects />} />
         <Route
-          path="/dashboard/manage-projects/create"
-          element={<CreateProject />}
+          path="/dashboard/manage-projects"
+          element={<IndexManageProject />}
         />
         <Route
-          path="/dashboard/manage-projects/edit/:id"
-          element={<EditProject />}
+          path="/dashboard/manage-projects/:projectId"
+          element={<ShowManageProject />}
         />
 
-        {/* show projects */}
-        <Route
-          path="/dashboard/manage-projects/:id"
-          element={<ProjectDetailWithTasks />}
-        />
+        {/* Profile */}
+        <Route path="/dashboard/profile" element={<IndexProfile />} />
       </Routes>
+
+      <Toaster />
     </BrowserRouter>
   </StrictMode>
 );

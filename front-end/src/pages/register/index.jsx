@@ -1,45 +1,68 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextLink from "@/components/text-link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AuthLayout from "@/layouts/auth-layout";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Register() {
-  // Dummy data state
+  const { register, error: authError } = useAuth();
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     password_confirmation: "",
   });
 
   const [processing, setProcessing] = useState(false);
-
-  // Dummy error handling
-  const errors = {
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-  };
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
+    setError(null);
 
-    // Simulasi proses submit
-    setTimeout(() => {
-      console.log("Form submitted:", data);
+    if (data.password !== data.password_confirmation) {
+      const msg = "Passwords do not match";
+      toast.error(msg);
+      setError(msg);
       setProcessing(false);
-      // Di sini Anda bisa tambahkan logika API call
-    }, 1000);
+      return;
+    }
+
+    try {
+      const { username, email, password } = data;
+      const success = await register(username, email, password);
+
+      if (!success) {
+        const errMsg = authError || "Registration failed. Please try again.";
+        toast.error(errMsg);
+        setError(errMsg);
+        setProcessing(false);
+        return;
+      }
+
+      toast.success("Registration successful! Please log in.");
+      navigate("/login");
+    } catch (err) {
+      const fallback = "Registration error occurred.";
+      const message = err?.message || fallback;
+      toast.error(message);
+      setError(message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
@@ -49,25 +72,21 @@ export default function Register() {
     >
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="grid gap-4">
-          {/* Name */}
+          {/* Username */}
           <div className="grid gap-1">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               type="text"
-              name="name"
+              name="username"
               required
               autoFocus
-              tabIndex={1}
               autoComplete="name"
-              value={data.name}
+              value={data.username}
               onChange={handleChange}
               disabled={processing}
               placeholder="Full name"
             />
-            {errors.name && (
-              <p className="text-sm text-red-500">{errors.name}</p>
-            )}
           </div>
 
           {/* Email */}
@@ -78,16 +97,12 @@ export default function Register() {
               type="email"
               name="email"
               required
-              tabIndex={2}
               autoComplete="email"
               value={data.email}
               onChange={handleChange}
               disabled={processing}
               placeholder="email@example.com"
             />
-            {errors.email && (
-              <p className="text-sm text-red-500">{errors.email}</p>
-            )}
           </div>
 
           {/* Password */}
@@ -98,16 +113,12 @@ export default function Register() {
               type="password"
               name="password"
               required
-              tabIndex={3}
               autoComplete="new-password"
               value={data.password}
               onChange={handleChange}
               disabled={processing}
               placeholder="Password"
             />
-            {errors.password && (
-              <p className="text-sm text-red-500">{errors.password}</p>
-            )}
           </div>
 
           {/* Confirm Password */}
@@ -118,28 +129,24 @@ export default function Register() {
               type="password"
               name="password_confirmation"
               required
-              tabIndex={4}
               autoComplete="new-password"
               value={data.password_confirmation}
               onChange={handleChange}
               disabled={processing}
               placeholder="Confirm password"
             />
-            {errors.password_confirmation && (
-              <p className="text-sm text-red-500">
-                {errors.password_confirmation}
-              </p>
-            )}
           </div>
 
+          {/* Error Message */}
+          {error && <p className="text-sm text-red-500">{error}</p>}
+
           {/* Submit Button */}
-          <Button
-            type="submit"
-            className="mt-2 w-full"
-            tabIndex={5}
-            disabled={processing}
-          >
-            {processing && <span className="animate-spin mr-2">🔄</span>}
+          <Button type="submit" className="mt-2 w-full" disabled={processing}>
+            {processing && (
+              <span className="animate-spin mr-2">
+                <Loader2 className="h-4 w-4" />
+              </span>
+            )}
             Create account
           </Button>
         </div>

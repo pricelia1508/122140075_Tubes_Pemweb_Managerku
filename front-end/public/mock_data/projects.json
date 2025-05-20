@@ -1,0 +1,32 @@
+[
+  {
+    "id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001",
+    "name": "Website Redesign",
+    "description": "Redesign the corporate website",
+    "start_date": "2025-01-10",
+    "ends_date": "2025-03-30",
+    "status": "ongoing",
+    "created_at": "2025-01-01",
+    "updated_at": "2025-02-03"
+  },
+  {
+    "id": "b7e43125-f3e2-4e9d-9452-b98d154d0101",
+    "name": "Mobile App",
+    "description": "Develop a new mobile application",
+    "start_date": "2025-02-15",
+    "ends_date": "2025-06-15",
+    "status": "planning",
+    "created_at": "2025-02-01",
+    "updated_at": "2025-02-03"
+  },
+  {
+    "id": "d3ac9047-33db-49be-9685-71d5ebc02020",
+    "name": "Mobile App",
+    "description": "Develop a new mobile application",
+    "start_date": "2025-02-15",
+    "ends_date": "2025-06-15",
+    "status": "finished",
+    "created_at": "2025-02-01",
+    "updated_at": "2025-02-03"
+  }
+]

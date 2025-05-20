@@ -1,18 +1,60 @@
 import { LoaderCircle } from "lucide-react";
-
 import TextLink from "@/components/text-link";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AuthLayout from "@/layouts/auth-layout";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login({ status, canResetPassword }) {
-  // Kosongkan handling form untuk saat ini
-  const submit = (e) => {
+  const { login, checkSession, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState({ email: "", password: "" });
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState(null);
+
+  // 🔒 Auto-redirect jika sudah login
+  useEffect(() => {
+    const session = checkSession();
+
+    if (session.isValid) {
+      navigate("/dashboard");
+    }
+  }, [checkSession, navigate]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    setProcessing(true);
+    setError(null);
+
+    try {
+      const success = await login(data.email, data.password);
+
+      if (!success) {
+        const message = "Email or password is incorrect.";
+        toast.error(message);
+        setError(message);
+        return;
+      }
+
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    } catch (err) {
+      const message = "Login failed: " + (err.message || "Unexpected error");
+      toast.error(message);
+      setError(message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
@@ -20,24 +62,26 @@ export default function Login({ status, canResetPassword }) {
       title="Log in to your account"
       description="Enter your email and password below to log in"
     >
-      <form className="flex flex-col gap-6" onSubmit={submit}>
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="grid gap-4">
+          {/* Email */}
           <div className="grid gap-1">
             <Label htmlFor="email">Email address</Label>
             <Input
               id="email"
               type="email"
+              name="email"
               required
               autoFocus
-              tabIndex={1}
               autoComplete="email"
-              // value={data.email} // Uncomment when form logic is added
-              // onChange={(e) => setData('email', e.target.value)} // Uncomment when form logic is added
+              value={data.email}
+              onChange={handleChange}
+              disabled={processing}
               placeholder="email@example.com"
             />
-            {/* <InputError message=errors.email /> */}
           </div>
 
+          {/* Password */}
           <div className="grid gap-1">
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
@@ -45,7 +89,6 @@ export default function Login({ status, canResetPassword }) {
                 <TextLink
                   href={route("password.request")}
                   className="ml-auto text-sm"
-                  tabIndex={5}
                 >
                   Forgot password?
                 </TextLink>
@@ -54,49 +97,43 @@ export default function Login({ status, canResetPassword }) {
             <Input
               id="password"
               type="password"
+              name="password"
               required
-              tabIndex={2}
               autoComplete="current-password"
-              // value={data.password} // Uncomment when form logic is added
-              // onChange={(e) => setData('password', e.target.value)} // Uncomment when form logic is added
+              value={data.password}
+              onChange={handleChange}
+              disabled={processing}
               placeholder="Password"
             />
-            {/* <InputError message=errors.password /> */}
           </div>
 
-          <div className="flex items-center space-x-3">
-            <Checkbox
-              id="remember"
-              name="remember"
-              // checked={data.remember} // Uncomment when form logic is added
-              // onClick={() => setData('remember', !data.remember)} // Uncomment when form logic is added
-              tabIndex={3}
-            />
-            <Label htmlFor="remember">Remember me</Label>
-          </div>
+          {/* Error Display */}
+          {error && <p className="text-sm text-red-500">{error}</p>}
 
+          {/* Submit Button */}
           <Button
             type="submit"
             className="mt-4 w-full"
-            tabIndex={4}
-            disabled={false}
+            disabled={processing || loading}
           >
-            {/* processing && <LoaderCircle className="h-4 w-4 animate-spin" /> */}
+            {processing && (
+              <span className="animate-spin mr-2">
+                <LoaderCircle className="h-4 w-4" />
+              </span>
+            )}
             Log in
           </Button>
         </div>
 
         {/* Register Link */}
         <div className="text-muted-foreground text-center text-sm">
-          Don't have an account?{" "}
-          <Link to="/register" tabIndex={6}>
-            Create an account
-          </Link>
+          Don't have an account? <Link to="/register">Create an account</Link>
         </div>
       </form>
 
+      {/* Optional status message */}
       {status && (
-        <div className="mb-4 text-center text-sm font-medium text-green-600">
+        <div className="mt-4 text-center text-sm font-medium text-green-600">
           {status}
         </div>
       )}

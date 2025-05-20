@@ -1,82 +1,124 @@
-import { useProjects } from "@/hooks/useProjects";
-import { Link } from "react-router-dom";
-import { Link2, Pencil, Trash2 } from "lucide-react";
+// src/components/card/Projects.jsx
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { Button } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import ProjectDialog from "@/components/dialog/project-dialog";
 
-export default function ProjectList() {
-  const { projects, loading, error } = useProjects();
+const statusStyles = {
+  ongoing: "bg-green-800 text-green-100",
+  planning: "bg-yellow-800 text-yellow-100",
+  finished: "bg-gray-700 text-gray-200",
+};
 
-  if (loading)
-    return (
-      <p className="text-center mt-10 text-muted-foreground">
-        Loading projects...
-      </p>
-    );
-  if (error)
-    return <p className="text-center text-red-600">Error: {error.message}</p>;
-
+const ProjectCard = ({ project, onEdit, onDelete }) => {
   return (
-    <section className="py-12 px-4 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">All Projects</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
-          <Link
-            to={`/dashboard/manage-projects/${project.id}`}
-            key={project.id}
-            className="relative rounded-xl overflow-hidden shadow-md group transition-transform duration-300 hover:scale-[1.01]"
-          >
-            {/* Background image */}
-            <div className="relative w-full h-64">
-              <img
-                src={project.image || "https://picsum.photos/400/250"}
-                alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary to-white/10 opacity-90 transition-opacity group-hover:opacity-95" />
-              {/* Text content */}
-              <div className="absolute inset-0 z-10 flex flex-col justify-end p-4 text-white">
-                <Link to={`/projects/${project.id}`}>
-                  <h3 className="text-lg font-bold mb-1 group-hover:underline">
-                    {project.title}
-                  </h3>
-                </Link>
-                <p className="text-sm text-white/80 line-clamp-2">
-                  {project.description}
-                </p>
-              </div>
-            </div>
+    <div className="relative group bg-gradient-to-t from-primary to-transparent rounded-xl p-1 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+      {/* Link untuk klik card */}
+      <Link to={`/dashboard/manage-projects/${project.id}`} className="block">
+        {/* Inner Card */}
+        <div className="bg-primary rounded-lg p-5 h-full flex flex-col justify-between min-h-[220px]">
+          {/* Status Badge */}
+          <div className="flex justify-between items-start">
+            <span
+              className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                statusStyles[project.status]
+              }`}
+            >
+              {project.status.toUpperCase()}
+            </span>
+          </div>
 
-            {/* Action buttons */}
-            <div className="absolute top-4 right-4 z-20 flex gap-2">
-              <Button
-                asChild
-                variant="outline"
-                size="icon"
-                className="bg-white/90 backdrop-blur-sm"
+          {/* Title & Description */}
+          <div className="mt-3">
+            <h2 className="text-xl font-bold text-white">{project.name}</h2>
+            <p className="text-sm text-gray-300 mt-2 line-clamp-2">
+              {project.description}
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      {/* Tombol Aksi (absolute) */}
+      <div className="absolute top-3 right-3 flex gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        {/* Tombol Edit */}
+        <ProjectDialog
+          triggerText={
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Edit"
+              className="text-blue-400 hover:text-blue-300 hover:bg-blue-950/30"
+            >
+              <Edit size={16} />
+            </Button>
+          }
+          onSubmit={(updatedData) => onEdit({ ...project, ...updatedData })}
+          initialData={project}
+          isEdit={true}
+        />
+
+        {/* Tombol Hapus */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Delete"
+              className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+            >
+              <Trash2 size={16} />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-white dark:bg-gray-900 text-black dark:text-white">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will delete the project "{project.name}". This action
+                cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="dark:text-gray-300">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => onDelete(project.id)}
+                className="bg-red-600 hover:bg-red-700"
               >
-                <Link to={`/dashboard/manage-projects/edit/${project.id}`}>
-                  <Pencil className="w-4 h-4 text-primary" />
-                </Link>
-              </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="bg-red-800 text-white hover:bg-red-900 backdrop-blur-sm"
-                onClick={() =>
-                  window.confirm(
-                    "Are you sure you want to delete this project?"
-                  )
-                    ? alert(`Deleting project ${project.id}`)
-                    : null
-                }
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </Link>
-        ))}
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-    </section>
+    </div>
   );
-}
+};
+
+ProjectCard.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired,
+    updated_at: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+  }).isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+export default ProjectCard;

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "name": "Create Sitemap",
+    "description": "Plan and create the sitemap for the new website",
+    "status": "completed",
+    "start_date": "2025-01-10",
+    "ends_date": "2025-01-17",
+    "project_id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001"
+  },
+  {
+    "id": "16fd2706-8b9a-4cce-9d52-36c623fc0c21",
+    "name": "Design Homepage Mockup",
+    "description": "Design the homepage UI in Figma",
+    "status": "in progress",
+    "start_date": "2025-01-18",
+    "ends_date": "2025-01-25",
+    "project_id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001"
+  },
+  {
+    "id": "337e67f1-55b0-42d0-bbce-d8c5b7f6a1d2",
+    "name": "Frontend Development Setup",
+    "description": "Set up development environment and tools",
+    "status": "in progress",
+    "start_date": "2025-01-26",
+    "ends_date": "2025-02-02",
+    "project_id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001"
+  },
+  {
+    "id": "9fc1b005-2f8e-4b3f-9a40-243bdfdbdb8d",
+    "name": "Backend Integration",
+    "description": "Integrate frontend with backend APIs",
+    "status": "pending",
+    "start_date": "2025-02-03",
+    "ends_date": "2025-02-10",
+    "project_id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001"
+  },
+  {
+    "id": "4b6bf0a1-87a4-4f56-89ff-26ca851c66fa",
+    "name": "User Authentication Module",
+    "description": "Implement login and registration system",
+    "status": "pending",
+    "start_date": "2025-02-11",
+    "ends_date": "2025-02-18",
+    "project_id": "a1c29e7e-5e0e-4f44-84f4-f6c1a1a1c001"
+  },
+  {
+    "id": "049f0b37-3e3c-4f1d-9b5c-2c9c0af01a3b",
+    "name": "Define App Requirements",
+    "description": "Gather user requirements for mobile app",
+    "status": "planning",
+    "start_date": "2025-02-05",
+    "ends_date": "2025-02-12",
+    "project_id": "b7e43125-f3e2-4e9d-9452-b98d154d0101"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Design App Wireframes",
+    "description": "Create wireframes for all app screens",
+    "status": "planning",
+    "start_date": "2025-02-13",
+    "ends_date": "2025-02-20",
+    "project_id": "b7e43125-f3e2-4e9d-9452-b98d154d0101"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "Setup CI/CD Pipeline",
+    "description": "Configure continuous integration and deployment",
+    "status": "planning",
+    "start_date": "2025-02-21",
+    "ends_date": "2025-02-28",
+    "project_id": "b7e43125-f3e2-4e9d-9452-b98d154d0101"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "name": "Build Login Screen",
+    "description": "Implement the login screen with Firebase auth",
+    "status": "not started",
+    "start_date": "2025-03-01",
+    "ends_date": "2025-03-08",
+    "project_id": "b7e43125-f3e2-4e9d-9452-b98d154d0101"
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "name": "App Testing Phase",
+    "description": "Test app on multiple devices and OS versions",
+    "status": "finished",
+    "start_date": "2025-01-10",
+    "ends_date": "2025-01-20",
+    "project_id": "d3ac9047-33db-49be-9685-71d5ebc02020"
+  }
+]

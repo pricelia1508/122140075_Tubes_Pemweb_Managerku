@@ -1,259 +1,188 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { useProjectsWithTasks } from "@/hooks/useProjectsWithTasks";
+// src/routes/dashboard/manage-projects/[id]/ShowManageProject.jsx
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useProjects } from "@/hooks/useProjects";
+import { useTasks } from "@/hooks/useTasks";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import {
-  DndContext,
-  closestCenter,
-  useSensor,
-  useSensors,
-  PointerSensor,
-  useDroppable,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import IndexNotFound from "@/pages/not-found";
+import TaskDialog from "@/components/dialog/task-dialog";
+import TaskCard from "@/components/card/card-task";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { CalendarDays, Info, Layers, FileClock } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-// Task Card
-function TaskItem({ task, onEdit, onDelete }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: task.id });
+export default function ShowManageProject() {
+  const navigate = useNavigate();
+  const { checkSession } = useAuth();
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  // 🔐 Check session on mount
+  useEffect(() => {
+    const session = checkSession();
 
-  return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="border border-muted rounded-md px-4 py-3 bg-white shadow-sm"
-    >
-      <div className="flex justify-between items-center gap-4">
-        <div>
-          <p className="text-sm font-medium text-gray-800">{task.name}</p>
-          <p className="text-xs text-muted-foreground capitalize">
-            {task.status.replace("_", " ")} • {task.priority}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => onEdit(task)}
-            className="text-muted-foreground hover:text-primary"
-          >
-            <Pencil className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => onDelete(task.id)}
-            className="text-muted-foreground hover:text-red-500"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </li>
-  );
-}
-
-// Droppable wrapper
-function DroppableZone({ id, children }) {
-  const { setNodeRef } = useDroppable({ id });
-  return (
-    <div ref={setNodeRef} className="space-y-3 min-h-[40px]">
-      {children}
-    </div>
-  );
-}
-
-export default function ProjectDetailWithTasks() {
-  const { id } = useParams();
-  const { projects, loading, error } = useProjectsWithTasks();
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const [taskName, setTaskName] = useState("");
-  const [editId, setEditId] = useState(null);
-  const [addedTasks, setAddedTasks] = useState([]);
-
-  const project = projects.find((p) => p.id === parseInt(id));
-  const baseTasks = project?.tasks || [];
-  const allTasks = [...baseTasks, ...addedTasks];
-
-  const todoTasks = allTasks.filter((t) => t.status !== "done");
-  const doneTasks = allTasks.filter((t) => t.status === "done");
-
-  const sensors = useSensors(useSensor(PointerSensor));
-
-  const handleAddOrUpdate = () => {
-    if (!taskName.trim()) return;
-    if (editId) {
-      setAddedTasks((prev) =>
-        prev.map((t) => (t.id === editId ? { ...t, name: taskName } : t))
-      );
-    } else {
-      const newTask = {
-        id: Date.now(),
-        name: taskName,
-        description: "Tugas manual",
-        priority: "medium",
-        status: "todo",
-        assigned_to: null,
-      };
-      setAddedTasks((prev) => [...prev, newTask]);
+    if (!session.isValid) {
+      navigate("/login");
     }
-    setTaskName("");
-    setEditId(null);
-    setOpenDialog(false);
+  }, []);
+
+  const { projectId } = useParams();
+  const {
+    getProjectById,
+    loading: projectLoading,
+    error: projectError,
+  } = useProjects();
+  const { getTasksByProjectId, loading: taskLoading, deleteTask } = useTasks();
+
+  const project = getProjectById(projectId);
+  const tasks = getTasksByProjectId(projectId);
+
+  const [filterStatus, setFilterStatus] = useState("all");
+
+  const filteredTasks =
+    filterStatus === "all"
+      ? tasks
+      : tasks.filter((task) => task.status === filterStatus);
+
+  const handleDeleteTask = (taskId) => {
+    deleteTask(taskId);
   };
 
-  const handleDelete = (id) =>
-    setAddedTasks((prev) => prev.filter((t) => t.id !== id));
-
-  const handleEdit = (task) => {
-    setTaskName(task.name);
-    setEditId(task.id);
-    setOpenDialog(true);
-  };
-
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-
-    const activeTask = allTasks.find((t) => t.id === active.id);
-    const newStatus = over.id;
-
-    if (!activeTask || activeTask.status === newStatus) return;
-
-    setAddedTasks((prev) =>
-      prev.map((t) => (t.id === active.id ? { ...t, status: newStatus } : t))
+  if (projectLoading || taskLoading) {
+    return (
+      <DashboardLayout>
+        <div className="flex justify-center items-center h-40">
+          <p>Loading...</p>
+        </div>
+      </DashboardLayout>
     );
-  };
+  }
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (error) return <div className="p-6 text-red-600">{error.message}</div>;
-  if (!project) return <div className="p-6">Project not found</div>;
+  if (projectError || !project) {
+    return <IndexNotFound />;
+  }
 
   return (
     <DashboardLayout>
-      <div className="p-6 max-w-4xl mx-auto">
-        {/* Project Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-1">
-            {project.name}
-          </h1>
-          <p className="text-muted-foreground">{project.description}</p>
-          <span className="inline-block mt-2 bg-primary text-white text-sm px-3 py-1 rounded-full capitalize">
-            {project.status.replace("_", " ")}
-          </span>
-        </div>
+      <div className="p-6 space-y-8">
+        {/* 🧾 Project Overview */}
+        <section>
+          <h1 className="text-2xl font-bold mb-4">Project Overview</h1>
 
-        {/* Add Task */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-800">Tasks</h2>
-          <AlertDialog open={openDialog} onOpenChange={setOpenDialog}>
-            <AlertDialogTrigger asChild>
-              <Button size="sm">{editId ? "Edit Task" : "Add Task"}</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {editId ? "Edit Task" : "Add New Task"}
-                </AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="grid gap-4 py-2">
-                <Label htmlFor="task">Task Title</Label>
-                <Input
-                  id="task"
-                  value={taskName}
-                  onChange={(e) => setTaskName(e.target.value)}
-                />
+          <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Layers size={20} className="text-gray-700" />
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {project.name}
+                </h2>
               </div>
-              <AlertDialogFooter>
-                <Button variant="outline" onClick={() => setOpenDialog(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleAddOrUpdate}>
-                  {editId ? "Save" : "Add"}
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
 
-        {/* Task Columns */}
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* TODO + IN PROGRESS */}
-            <div>
-              <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                Belum Selesai
-              </h3>
-              <DroppableZone id="todo">
-                <SortableContext
-                  items={todoTasks.map((t) => t.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  <ul className="space-y-3">
-                    {todoTasks.map((task) => (
-                      <TaskItem
-                        key={task.id}
-                        task={task}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                      />
-                    ))}
-                  </ul>
-                </SortableContext>
-              </DroppableZone>
-            </div>
+              <div className="flex items-start gap-2 text-sm text-gray-600">
+                <Info size={16} className="mt-0.5 text-gray-500" />
+                <p>{project.description}</p>
+              </div>
 
-            {/* DONE */}
-            <div>
-              <h3 className="text-sm font-semibold text-muted-foreground mb-2">
-                Selesai
-              </h3>
-              <DroppableZone id="done">
-                <SortableContext
-                  items={doneTasks.map((t) => t.id)}
-                  strategy={verticalListSortingStrategy}
+              <div>
+                <span
+                  className={`inline-block text-xs font-medium px-3 py-1 rounded-full shadow-sm ${
+                    project.status === "ongoing"
+                      ? "bg-green-100 text-green-800"
+                      : project.status === "planning"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-gray-100 text-gray-700"
+                  }`}
                 >
-                  <ul className="space-y-3">
-                    {doneTasks.map((task) => (
-                      <TaskItem
-                        key={task.id}
-                        task={task}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                      />
-                    ))}
-                  </ul>
-                </SortableContext>
-              </DroppableZone>
+                  {project.status.toUpperCase()}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <CalendarDays size={14} />
+                  <p>
+                    <span className="font-medium">Start:</span>{" "}
+                    {project.start_date}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CalendarDays size={14} />
+                  <p>
+                    <span className="font-medium">End:</span>{" "}
+                    {project.ends_date}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FileClock size={14} />
+                  <p>
+                    <span className="font-medium">Created:</span>{" "}
+                    {project.created_at}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FileClock size={14} />
+                  <p>
+                    <span className="font-medium">Updated:</span>{" "}
+                    {project.updated_at}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </DndContext>
+        </section>
+
+        {/* ✅ Task List Section */}
+        <section>
+          <div className="flex flex-col md:flex-row items-start justify-between md:items-center mb-4">
+            <h2 className="text-xl font-bold">Tasks</h2>
+
+            <div className="flex gap-2 justify-between w-full md:w-fit">
+              <Select
+                value={filterStatus}
+                onValueChange={(value) => setFilterStatus(value)}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="todo">Todo</SelectItem>
+                  <SelectItem value="not started">Not Started</SelectItem>
+                  <SelectItem value="in progress">In Progress</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="finished">Finished</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <TaskDialog
+                triggerText={<Button>Create Task</Button>}
+                projectId={project.id}
+              />
+            </div>
+          </div>
+
+          {filteredTasks.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400 italic">
+              No tasks found for this project.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {filteredTasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onDelete={handleDeleteTask}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
     </DashboardLayout>
   );
