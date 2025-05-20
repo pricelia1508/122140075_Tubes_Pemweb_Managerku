@@ -1,0 +1,5 @@
+[console_scripts]
+initialize_pyramid_projects_db = pyramid_projects.scripts.initialize_db:main
+
+[paste.app_factory]
+main = pyramid_projects:main
