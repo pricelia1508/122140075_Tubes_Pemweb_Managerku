@@ -3,4 +3,4 @@ from pyramid.view import view_config
 
 @view_config(route_name='home')
 def home_view(request):
-    return Response('Ruang Pulih API Home', content_type='text/plain')
+    return Response('Managerku API Home', content_type='text/plain')
