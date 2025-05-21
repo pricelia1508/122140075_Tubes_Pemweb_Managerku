@@ -1,11 +1,22 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth"; // pastikan path ini sesuai struktur project kamu
+
+// Menu navigasi utama
+const navItems = [
+  { label: "Home", path: "/" },
+  { label: "Projects", path: "/projects" },
+  { label: "Tasks", path: "/tasks" },
+  { label: "Team", path: "/team" },
+  { label: "Reports", path: "/reports" },
+];
 
 export default function Navbar() {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated } = useAuth(); // 🔐 cek status login
 
   // Scroll event handler
   const handleScroll = useCallback(() => {
@@ -44,6 +55,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
+        {/* Uncomment jika ingin menampilkan menu */}
         {/* <nav className="hidden md:flex space-x-8">
           {navItems.map((item) => (
             <Link
@@ -58,12 +70,16 @@ export default function Navbar() {
 
         {/* Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
-          <Button asChild variant="outline" size="sm">
-            <Link to="/login">Masuk</Link>
-          </Button>
-          <Button asChild size="sm">
-            <Link to="/dashboard">Dashboard</Link>
-          </Button>
+          {!isAuthenticated && (
+            <Button asChild variant="outline" size="sm">
+              <Link to="/login">Masuk</Link>
+            </Button>
+          )}
+          {isAuthenticated && (
+            <Button asChild size="sm">
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -100,40 +116,34 @@ export default function Navbar() {
       {isOpen && (
         <nav className="md:hidden bg-[#E7F0FA]/90 backdrop-blur-md rounded-b-md pb-4 pt-2 mt-1">
           <ul className="flex flex-col gap-2 px-4">
-            {/* {navItems.map((item) => (
-              <li key={item.path}>
-                <Link
-                  to={item.path}
-                  className={getNavLinkClass(item.path)}
-                  onClick={() => setIsOpen(false)}
+            {!isAuthenticated && (
+              <li>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full justify-start text-left text-blue-800 border-blue-800 hover:bg-blue-800/5"
                 >
-                  {item.label}
-                </Link>
+                  <Link to="/login" onClick={() => setIsOpen(false)}>
+                    Masuk
+                  </Link>
+                </Button>
               </li>
-            ))} */}
-            <li>
-              <Button
-                asChild
-                variant="outline"
-                className="w-full justify-start text-left text-blue-800 border-blue-800 hover:bg-blue-800/5"
-              >
-                <Link to="/login" onClick={() => setIsOpen(false)}>
-                  Masuk
-                </Link>
-              </Button>
-            </li>
+            )}
+            {isAuthenticated && (
+              <li>
+                <Button
+                  asChild
+                  className="w-full justify-start text-left text-white bg-blue-800 hover:bg-blue-700"
+                >
+                  <Link to="/dashboard" onClick={() => setIsOpen(false)}>
+                    Dashboard
+                  </Link>
+                </Button>
+              </li>
+            )}
           </ul>
         </nav>
       )}
     </header>
   );
 }
-
-// Menu navigasi utama
-const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Projects", path: "/projects" },
-  { label: "Tasks", path: "/tasks" },
-  { label: "Team", path: "/team" },
-  { label: "Reports", path: "/reports" },
-];
