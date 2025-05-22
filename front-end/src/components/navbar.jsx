@@ -1,24 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth"; // pastikan path ini sesuai struktur project kamu
-
-// Menu navigasi utama
-const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Projects", path: "/projects" },
-  { label: "Tasks", path: "/tasks" },
-  { label: "Team", path: "/team" },
-  { label: "Reports", path: "/reports" },
-];
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated } = useAuth(); // 🔐 cek status login
+  const { checkSession } = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Scroll event handler
+  // Scroll handler
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 20);
   }, []);
@@ -27,6 +19,11 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  useEffect(() => {
+    const { isValid } = checkSession();
+    setIsAuthenticated(isValid);
+  }, [checkSession]);
 
   const getNavLinkClass = (href) => {
     const isActive = location.pathname === href;
@@ -54,21 +51,7 @@ export default function Navbar() {
           <span className="font-bold text-sm sm:text-base">Managerku</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        {/* Uncomment jika ingin menampilkan menu */}
-        {/* <nav className="hidden md:flex space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={getNavLinkClass(item.path)}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav> */}
-
-        {/* Auth Buttons */}
+        {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
           {!isAuthenticated && (
             <Button asChild variant="outline" size="sm">
