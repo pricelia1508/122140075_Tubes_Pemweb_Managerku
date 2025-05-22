@@ -1,7 +1,7 @@
-// src/pages/Dashboard.jsx
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { useProjects } from "@/hooks/useProjects";
 import { useTasks } from "@/hooks/useTasks";
+import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 import {
   FolderKanban,
@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const {
     projects,
     loading: projectsLoading,
@@ -22,10 +23,20 @@ export default function Dashboard() {
   } = useProjects();
   const { tasks, loading: tasksLoading, error: tasksError } = useTasks();
 
-  // Gabungkan tasks ke dalam projects
+  // Ambil semua project
+  // Lalu cari ID project yang dimiliki oleh user saat ini
+  const userProjectIds = projects
+    .filter((project) => project.user_id === user?.id)
+    .map((project) => project.id);
+
+  // Gabungkan semua project, tapi hanya ambil task milik project user
   const mergedData = projects.map((project) => ({
     ...project,
-    tasks: tasks.filter((task) => task.project_id === project.id),
+    tasks: tasks.filter(
+      (task) =>
+        task.project_id === project.id &&
+        userProjectIds.includes(task.project_id)
+    ),
   }));
 
   const totalProjects = mergedData.length;
@@ -120,9 +131,10 @@ export default function Dashboard() {
               "completed",
               "finished",
             ].map((status) => {
-              const count = tasks.filter(
-                (task) => task.status === status
-              ).length;
+              const count = mergedData
+                .flatMap((project) => project.tasks)
+                .filter((task) => task.status === status).length;
+
               const label = status
                 .split(" ")
                 .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -178,10 +190,7 @@ export default function Dashboard() {
                   to={`/dashboard/manage-projects/${project.id}`}
                   className="relative group rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-200"
                 >
-                  {/* Background gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-10 pointer-events-none" />
-
-                  {/* Inner content */}
                   <div className="relative z-10 p-5 flex flex-col justify-between h-full bg-white">
                     <div className="flex flex-col gap-2">
                       <h3 className="text-lg font-semibold text-gray-900">
@@ -191,7 +200,6 @@ export default function Dashboard() {
                         {project.description}
                       </p>
                     </div>
-
                     <div className="mt-4 flex justify-between items-center text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <Calendar size={12} />
