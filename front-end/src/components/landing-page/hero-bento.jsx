@@ -14,7 +14,7 @@ import {
 const features = [
   {
     title: "Pantau Proyek Anda",
-    description: "Lihat status semua proyek secara real-time.",
+    description: "Lihat status semua proyek.",
     icon: Eye,
   },
   {
@@ -40,8 +40,8 @@ export default function HeroGrid() {
           Satu Tempat untuk Semua Proyek Anda
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Managerku membantu Anda mengelola proyek, tugas, dan tim dalam satu
-          platform terpadu.
+          Managerku membantu Anda mengelola proyek dan tugas dalam satu platform
+          terpadu.
         </p>
 
         <Link
